@@ -1,0 +1,5 @@
+from building import *
+Import('env')
+cwd = GetCurrentDir()
+group = DefineGroup('FirmwareApp', ['main.c'], depend=[''], CPPPATH=[cwd])
+Return('group')

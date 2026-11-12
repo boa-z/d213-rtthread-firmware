@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "rt_thread": {
+    "url": "https://github.com/boa-z/rt-thread.git",
+    "commit": "a4ecc4a7e36cf3c727c136f7aa0fea2504af78ff",
+    "branch": "bsp/artinchip-d213-dev"
+  },
+  "toolchain": {
+    "url": "https://github.com/RT-Thread/toolchains-ci/releases/download/v1.4/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz",
+    "sha256": "bd857242b7c64b1a98c56b35bc801864ac4205d03f383c7010a90c5d0bb9549a",
+    "version": "10.2.0",
+    "directory": "riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14"
+  },
+  "vendor": {
+    "url": "https://github.com/jiachenin/luban-lite-jc",
+    "commit": "22fdca3473de01076e35bf424f283ec7d9ff5571",
+    "files": {
+      "vendor/artinchip/mk_image.py": "d2bd5463dd7a26c8174b16072df7dd5778e1d1d7f7be8c8a2419b52747e08931",
+      "vendor/artinchip/gen_partition_table.py": "5800920aa9b00bfeeb9004054efee12dc89e3d32a978ff2e2a66f29301078f20",
+      "vendor/artinchip/mk_private_resource.py": "4c656307d9d074d2347b1ef938cac377aa59accb861f6551fddb18f76da743df",
+      "vendor/artinchip/elf2image/__init__.py": "43d3fd4127435cfd70ce620f218321669a5f7f32a8dd7689550c36db1a9176b9",
+      "vendor/artinchip/elf2image/__main__.py": "31ea15f142e264eacd5f23b33dd3b2b9364ca372f9f9509430707cbbb427e2b6",
+      "vendor/artinchip/elf2image/_core.py": "f1214e05c5ef4dcf5fb8d1603f005951fecc0927c4a7efb07101a88f3173ecb2",
+      "vendor/artinchip/aic_private_resource/__init__.py": "094e213c8cfb8160f914077bd17f8d03745462615b97f2b034a0e58d7d13ccb6",
+      "vendor/artinchip/aic_private_resource/__main__.py": "99a15b759205ec1d55147dbfd0994c4b1591bc075d94ad261103a4e3cbcbe208",
+      "vendor/artinchip/aic_private_resource/_core.py": "16bf5e6b0f3b48c73be6a6c058653a8322563d7d1777166d7073df4c5a36cd36",
+      "vendor/artinchip/itbimage/__init__.py": "d9471ed79badab607490118ca534dab0ed64d6d4f5c869ed2779af3f420cbd5b",
+      "vendor/artinchip/itbimage/__main__.py": "8c8aed104cf09b7c248ce8af8a3fc22a64956e78429f103891307b84b9fa687d",
+      "vendor/artinchip/itbimage/_cipher.py": "06378c9526cd22fbb1f291ac2cd27515e540377a8ab5c4cfdf55c7da9d567bd9",
+      "vendor/artinchip/itbimage/_core.py": "0c9d5ac0075c162774de9dac8449b0d88617aff2d937830030b24ad4cbe88527",
+      "vendor/artinchip/itbimage/_dump.py": "ec58c6dbd436247f98dbb5d019bb6dbbc2e0963b602df66af943380ac581c3f3",
+      "vendor/artinchip/itbimage/_fdt_regions.py": "36c469cb948b4cc185adca5e0f1abeff0fceec1b15e03c5f00614a3c7fa961ca",
+      "vendor/artinchip/itbimage/_hash.py": "9cf948c1cdcf398f96489f45e0aba655cd5f9ad12f8688cda79ddf4dcfb1836b",
+      "vendor/artinchip/itbimage/_sign.py": "916b4f3eb0772381f8a472a6a75f708408309b5fd551a53b41854421db7a81ac",
+      "vendor/artinchip/fdt/__init__.py": "a4082372b2157e90257dbef3c7bee149306c7c4b5590dcbaad17e989c56bf274",
+      "vendor/artinchip/fdt/__main__.py": "1b4d1e57b8b75b12f9f8cecdc4a38f0d47b4cd4afe029c018aa84ad8983ab320",
+      "vendor/artinchip/fdt/header.py": "b84794096a4911d6fcc98bcdc7e8ea9e71da610a273277eb3d9664515b29c4c6",
+      "vendor/artinchip/fdt/items.py": "c6c447ad9e4f052865649bb7cba58f2bbb09ef236330bb28018ae703484f48e2",
+      "vendor/artinchip/fdt/misc.py": "4a6c0a902b298c037bc073694f0758ee769f668f4f8d2eac5950be88e88f9163"
+    },
+    "local_files": {
+      "vendor/artinchip/aic_private_resource/__init__.py": "094e213c8cfb8160f914077bd17f8d03745462615b97f2b034a0e58d7d13ccb6",
+      "vendor/artinchip/aic_private_resource/__main__.py": "99a15b759205ec1d55147dbfd0994c4b1591bc075d94ad261103a4e3cbcbe208",
+      "vendor/artinchip/aic_private_resource/_core.py": "16bf5e6b0f3b48c73be6a6c058653a8322563d7d1777166d7073df4c5a36cd36",
+      "vendor/artinchip/elf2image/__init__.py": "43d3fd4127435cfd70ce620f218321669a5f7f32a8dd7689550c36db1a9176b9",
+      "vendor/artinchip/elf2image/__main__.py": "31ea15f142e264eacd5f23b33dd3b2b9364ca372f9f9509430707cbbb427e2b6",
+      "vendor/artinchip/elf2image/_core.py": "f1214e05c5ef4dcf5fb8d1603f005951fecc0927c4a7efb07101a88f3173ecb2",
+      "vendor/artinchip/fdt/__init__.py": "a4082372b2157e90257dbef3c7bee149306c7c4b5590dcbaad17e989c56bf274",
+      "vendor/artinchip/fdt/__main__.py": "1b4d1e57b8b75b12f9f8cecdc4a38f0d47b4cd4afe029c018aa84ad8983ab320",
+      "vendor/artinchip/fdt/header.py": "b84794096a4911d6fcc98bcdc7e8ea9e71da610a273277eb3d9664515b29c4c6",
+      "vendor/artinchip/fdt/items.py": "c6c447ad9e4f052865649bb7cba58f2bbb09ef236330bb28018ae703484f48e2",
+      "vendor/artinchip/fdt/misc.py": "4a6c0a902b298c037bc073694f0758ee769f668f4f8d2eac5950be88e88f9163",
+      "vendor/artinchip/gen_partition_table.py": "5800920aa9b00bfeeb9004054efee12dc89e3d32a978ff2e2a66f29301078f20",
+      "vendor/artinchip/itbimage/__init__.py": "d9471ed79badab607490118ca534dab0ed64d6d4f5c869ed2779af3f420cbd5b",
+      "vendor/artinchip/itbimage/__main__.py": "8c8aed104cf09b7c248ce8af8a3fc22a64956e78429f103891307b84b9fa687d",
+      "vendor/artinchip/itbimage/_cipher.py": "06378c9526cd22fbb1f291ac2cd27515e540377a8ab5c4cfdf55c7da9d567bd9",
+      "vendor/artinchip/itbimage/_core.py": "0c9d5ac0075c162774de9dac8449b0d88617aff2d937830030b24ad4cbe88527",
+      "vendor/artinchip/itbimage/_dump.py": "ec58c6dbd436247f98dbb5d019bb6dbbc2e0963b602df66af943380ac581c3f3",
+      "vendor/artinchip/itbimage/_fdt_regions.py": "36c469cb948b4cc185adca5e0f1abeff0fceec1b15e03c5f00614a3c7fa961ca",
+      "vendor/artinchip/itbimage/_hash.py": "9cf948c1cdcf398f96489f45e0aba655cd5f9ad12f8688cda79ddf4dcfb1836b",
+      "vendor/artinchip/itbimage/_sign.py": "916b4f3eb0772381f8a472a6a75f708408309b5fd551a53b41854421db7a81ac",
+      "vendor/artinchip/mk_image.py": "b7dd93988d5ab295e0ed7c376fe74fb656147f4d948ba52d86ec7041760dfc7c",
+      "vendor/artinchip/mk_private_resource.py": "4c656307d9d074d2347b1ef938cac377aa59accb861f6551fddb18f76da743df"
+    }
+  },
+  "boot_resources": {
+    "bootloader.bin": {
+      "source_path": "target/d21x/demo128-nand/pack/bootloader.bin",
+      "commit": "22fdca3473de01076e35bf424f283ec7d9ff5571",
+      "sha256": "1a650d2ef20844953dfe2ffd92dc86513d78bb0b185f55f96c5657e94266adba",
+      "size": 367904,
+      "redistribution": "unconfirmed; user-supplied only"
+    },
+    "d21x.pbp": {
+      "source_path": "bsp/artinchip/sys/d21x/d21x.pbp",
+      "commit": "22fdca3473de01076e35bf424f283ec7d9ff5571",
+      "sha256": "4e0445af81276112cafa839c2060a3758ed1c0c799b2eb8197cd80621364d3ea",
+      "size": 30000,
+      "redistribution": "unconfirmed; user-supplied only"
+    }
+  }
+}

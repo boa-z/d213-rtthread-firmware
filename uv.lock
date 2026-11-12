@@ -1,0 +1,36 @@
+version = 1
+revision = 5
+requires-python = ">=3.11"
+
+[[package]]
+name = "d213-rtthread-firmware"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "kconfiglib" },
+    { name = "scons" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "kconfiglib", specifier = "==14.1.0" },
+    { name = "scons", specifier = "==4.11.1" },
+]
+
+[[package]]
+name = "kconfiglib"
+version = "14.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/59/29/d557718c84ef1a8f275faa4caf8e353778121beefbe9fadfa0055ca99aae/kconfiglib-14.1.0.tar.gz", hash = "sha256:bed2cc2216f538eca4255a83a4588d8823563cdd50114f86cf1a2674e602c93c", size = 162613, upload-time = "2020-01-31T06:40:50.563Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/f1/d98a89231e779b079b977590efcc31249d959c8f1d4b5858cad69695ff9c/kconfiglib-14.1.0-py2.py3-none-any.whl", hash = "sha256:edcd35a20e7e138a9a9e96149027f805f785e818d2eae400b6fa8b0c8845114a", size = 145875, upload-time = "2020-01-31T06:40:47.252Z" },
+]
+
+[[package]]
+name = "scons"
+version = "4.11.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/42/b9/b7a5c88f348a0c34594d88100872c55fa1cae863ccb222c1c438341b5503/scons-4.11.1.tar.gz", hash = "sha256:4210d1a80a62e986029208117991b6347ccaaaab37b67463a3ff31ee065dc487", size = 3268963, upload-time = "2026-08-27T04:33:18.232Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8e/43/d6285848e893c19682c06e92679dc1a07d37ff7ea148747b1df681ec496c/scons-4.11.1-py3-none-any.whl", hash = "sha256:454cef364348053422696e3d2ecb4fa593c96a624f955842eaaea64f95c8d11d", size = 4123659, upload-time = "2026-08-27T04:33:12.728Z" },
+]

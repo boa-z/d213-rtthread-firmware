@@ -1,0 +1,10 @@
+.cache/
+.venv/
+out/
+__pycache__/
+*.pyc
+*.img
+*.bin
+*.aic
+*.pbp
+.env

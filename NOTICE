@@ -1,0 +1,14 @@
+d213-rtthread-firmware
+Copyright (c) 2026 boa-z
+
+Contains Python image tools derived from:
+ArtInChip Luban-Lite, Copyright (C) 2021-2026 ArtInChip Technology Co., Ltd.
+https://github.com/jiachenin/luban-lite-jc
+Vendor file notices and SPDX identifiers are retained.
+
+Contains fdt Python sources, Copyright 2017 Martin Olejar, Apache-2.0.
+
+The RT-Thread dependency remains separately maintained and is fetched by commit.
+RT-Thread and ArtInChip HAL copyright notices remain in their original sources.
+See docs/THIRD_PARTY.md and deps.lock.json for component scope and modifications.
+No license to redistribute external Bootloader/PBP binaries is asserted.

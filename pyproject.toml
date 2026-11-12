@@ -1,0 +1,9 @@
+[project]
+name = "d213-rtthread-firmware"
+version = "0.1.0"
+description = "Standalone minimal RT-Thread firmware for ArtInChip D213"
+requires-python = ">=3.11"
+dependencies = ["scons==4.11.1", "kconfiglib==14.1.0"]
+
+[tool.uv]
+package = false
