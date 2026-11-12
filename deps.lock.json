@@ -66,17 +66,21 @@
   "boot_resources": {
     "bootloader.bin": {
       "source_path": "target/d21x/demo128-nand/pack/bootloader.bin",
-      "commit": "22fdca3473de01076e35bf424f283ec7d9ff5571",
+      "commit": "c5807f9e7d18292f920dafaa018b8174635085c4",
       "sha256": "1a650d2ef20844953dfe2ffd92dc86513d78bb0b185f55f96c5657e94266adba",
       "size": 367904,
-      "redistribution": "unconfirmed; user-supplied only"
+      "redistribution": "SDK redistribution grant in ReadMe.md; unchanged vendor resource",
+      "permission_reference": "https://github.com/jiachenin/luban-lite-jc/blob/c5807f9e7d18292f920dafaa018b8174635085c4/ReadMe.md#授权与使用条件",
+      "vendored_path": "vendor/boot/d213-demo128-nand/bootloader.bin"
     },
     "d21x.pbp": {
       "source_path": "bsp/artinchip/sys/d21x/d21x.pbp",
-      "commit": "22fdca3473de01076e35bf424f283ec7d9ff5571",
+      "commit": "c5807f9e7d18292f920dafaa018b8174635085c4",
       "sha256": "4e0445af81276112cafa839c2060a3758ed1c0c799b2eb8197cd80621364d3ea",
       "size": 30000,
-      "redistribution": "unconfirmed; user-supplied only"
+      "redistribution": "SDK redistribution grant in ReadMe.md; unchanged vendor resource",
+      "permission_reference": "https://github.com/jiachenin/luban-lite-jc/blob/c5807f9e7d18292f920dafaa018b8174635085c4/ReadMe.md#授权与使用条件",
+      "vendored_path": "vendor/boot/d213-demo128-nand/d21x.pbp"
     }
   },
   "runtime_license_sources": [
@@ -98,5 +102,10 @@
       "path": "COPYING3",
       "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
     }
-  ]
+  ],
+  "boot_notice": {
+    "path": "vendor/artinchip/SDK-NOTICE.txt",
+    "source": "https://github.com/jiachenin/luban-lite-jc/blob/c5807f9e7d18292f920dafaa018b8174635085c4/ReadMe.md",
+    "sha256": "1e0b575ee48d0ef4cefe79ece660fef8b38286d94b5499433cb4da817566f8be"
+  }
 }

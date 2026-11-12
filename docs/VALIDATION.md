@@ -13,16 +13,17 @@ Date: 2026-11-12. Target: ArtInChip D213ECV-DEMO-V4-0, demo128-nand.
 - Independent FIT checks: segment bytes versus ELF, load/entry, external data
   offsets and CRC32/MD5. Vendor `-E -B 0x800` equivalent FIT generation retained.
 - Built full IMG locally using the locked, locally available original boot
-  resources. This is authorized local use, not a redistribution claim.
+  resources. The same original resources are now included in `vendor/boot/` with SHA256 and
+  the SDK redistribution notice, as authorized by the project owner.
 - Independent full checks: BROM magic/version, checksums and MD5, exact loader
   bytes/addresses, PBP/private DDR data, redundant env CRC/size, IMG header/info
   CRC, 7 metadata entries, target partitions, payload CRCs and payload bounds.
-- Eleven unittest cases passed with full local artifacts, covering malformed
+- Twelve unittest cases cover full local artifacts, covering malformed
   ELF/ABI/entry/DDR ranges, corrupted FIT load/hash, partition drift/overflow,
   unknown boot resources, environment overflow, IMG corruption, source hashes
-  and full-image rejection by the public upload stage. Public-mode runs skip
-  the hardware-resource-dependent full-image test and use inert synthetic IMG
-  payloads to exercise the actual container writer and oversize rejection.
+  and strict release artifact staging. Full CI runs all cases using the fixed
+  boot resources; ELF/FIT-only runs skip the full-image cases. Inert synthetic
+  payloads also exercise the real IMG writer and oversize rejection.
 
 ## Comparison with the original SDK packer
 
@@ -62,12 +63,13 @@ Only the unsigned D213 demo128 NAND contract is supported.
   `hardware_tested=false`; no full IMG or boot resources were present.
   CI ELF was 881,328 bytes, BIN 61,984 bytes, FIT 65,536 bytes. Debug paths
   account for ELF/map size differences from local builds.
-- **Release workflow:** `v*` tags build again before publishing ELF/FIT assets.
+- **Release workflow:** `v*` tags build again before publishing complete ELF/FIT/IMG assets.
   Current releases and their tag-specific build evidence are available on
   https://github.com/boa-z/d213-rtthread-firmware/releases.
-- **Public complete IMG:** blocked on confirmation of Bootloader/PBP
-  redistribution permission. Source commit/path/hash are recorded, binaries
-  excluded. Public ELF/FIT mode and explicitly scoped tag release are ready.
+- **Complete IMG CI:** enabled using the two fixed boot resources in
+  `vendor/boot/`, with original SDK notice retained. The first ELF/FIT-only run
+  above is historical evidence; current full-image run results are listed on
+  the Actions page and checked before tagging a release.
 - **Real board boot, UART, tick, interrupts, scheduling, reset/recovery:** not
   tested. No serial development board was available. Runtime readiness is a
   design target, not a claimed hardware result.
@@ -78,7 +80,7 @@ Only the unsigned D213 demo128 NAND contract is supported.
 
 ## Publishing a new version
 
-Inspect the main-branch Actions checks, download the public artifacts and verify
+Inspect the main-branch Actions checks, download the firmware artifacts and verify
 `SHA256SUMS` before tagging. Use `gh run view RUN_ID --log-failed` to investigate
-failures. A `v*` tag invokes the public ELF/FIT release workflow. Complete IMG
-publication still requires confirmation of boot resource redistribution rights.
+failures. A `v*` tag invokes the full firmware release workflow, including IMG
+and the retained SDK/runtime notices.

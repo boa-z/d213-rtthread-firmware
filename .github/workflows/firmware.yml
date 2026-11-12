@@ -1,4 +1,4 @@
-name: Minimal ELF and FIT (public)
+name: D213 minimal firmware (ELF, FIT, IMG)
 on:
   pull_request:
   push:
@@ -25,16 +25,16 @@ jobs:
         run: uv sync --frozen
       - name: Unit tests
         run: uv run --frozen python -m unittest discover -s tests -v
-      - name: Build ELF and FIT with locked toolchain
-        run: uv run --frozen python tools/build.py --profile minimal --mode public
+      - name: Build and verify complete firmware with locked dependencies
+        run: uv run --frozen python tools/build.py --profile minimal --mode full
       - name: Verify generated artifacts and reject malformed images
         run: uv run --frozen python -m unittest discover -s tests -v
-      - name: Stage public artifacts only
-        run: uv run --frozen python tools/stage_public.py
+      - name: Stage verified firmware and license notices
+        run: uv run --frozen python tools/stage_artifacts.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: d213-minimal-public-${{ github.sha }}
-          path: out/public/*
+          name: d213-minimal-${{ github.sha }}
+          path: out/release/*
           if-no-files-found: error
           retention-days: 30
   release:
@@ -42,21 +42,25 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     permissions:
+      actions: read
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
     steps:
-      - name: Download verified public artifacts
-        run: gh run download "$GITHUB_RUN_ID" --name "d213-minimal-public-$GITHUB_SHA" --dir dist
-      - name: Publish public ELF and FIT release
+      - name: Download verified firmware artifacts
+        run: gh run download "$GITHUB_RUN_ID" --name "d213-minimal-$GITHUB_SHA" --dir dist
+      - name: Publish complete minimal firmware release
         run: |
           cat > notes.txt <<'EOF'
-          D213 minimal RT-Thread: ELF + FIT only. Hardware boot has not been tested.
+          Complete minimal RT-Thread firmware for ArtInChip D213ECV-DEMO-V4-0:
+          ELF, BIN, FIT/ITB and ArtInChip SPI NAND IMG, plus manifest, SHA256SUMS
+          and third-party license notices.
 
-          This release does not contain a flashable full ArtInChip IMG. Bootloader/PBP
-          redistribution rights remain unconfirmed. Complete images can be built
-          locally with authorized resources and the hashes in deps.lock.json.
-          See README.md and docs/THIRD_PARTY.md for build and license details.
+          Target: C906 RV64GC/lp64d, 128 MiB DDR3, 128 MiB SPI NAND, UART0 115200.
+          Bootloader/PBP and toolchain are pinned by source revision and SHA256.
+          Offline ELF/FIT/BROM/IMG structure, address, partition and CRC checks pass.
+          Hardware startup, UART operation and reset recovery have not been tested.
+          Read README.md before flashing; preserve a recovery path and flash backup.
           EOF
-          gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --title "$GITHUB_REF_NAME — public ELF + FIT" --notes-file notes.txt
+          gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --title "$GITHUB_REF_NAME — D213 minimal firmware" --notes-file notes.txt

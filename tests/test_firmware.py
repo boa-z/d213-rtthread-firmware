@@ -13,7 +13,7 @@ import zlib
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'tools'))
 from verify import boot_images, config, elf, fit, image, layout, resources
-from stage_public import stage
+from stage_artifacts import stage
 
 
 class Contracts(unittest.TestCase):
@@ -118,10 +118,24 @@ class BuiltFirmware(unittest.TestCase):
         if not manifest.exists(): self.skipTest('no successful build manifest')
         with tempfile.TemporaryDirectory() as d:
             if json.loads(manifest.read_text())['mode']=='full':
-                with self.assertRaises(ValueError):stage(self.directory,Path(d)/'public')
+                with self.assertRaises(ValueError):stage(self.directory,Path(d)/'public',mode='public')
             else:
-                stage(self.directory,Path(d)/'public')
+                stage(self.directory,Path(d)/'public',mode='public')
                 self.assertFalse(list((Path(d)/'public').glob('*.img')))
+
+    def test_stage_full_allowlist(self):
+        manifest = self.directory/'manifest.json'
+        if not manifest.exists() or json.loads(manifest.read_text())['mode'] != 'full':
+            self.skipTest('full-mode manifest not available')
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d)/'release'
+            stage(self.directory,target)
+            self.assertTrue((target/'d213-minimal.img').exists())
+            self.assertFalse((target/'bootloader.bin').exists())
+            self.assertFalse((target/'d21x.pbp').exists())
+            (target/'d213-minimal.img').write_bytes(b'corrupted')
+            with self.assertRaisesRegex(ValueError,'artifact changed'):
+                stage(target,Path(d)/'corrupted')
 
     def test_full_image_and_corruption(self):
         img=self.directory/'d213-minimal.img'

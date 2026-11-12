@@ -5,23 +5,25 @@ D213ECV-DEMO-V4-0**, C906 RV64GC/lp64d, 128 MiB DDR3 and 128 MiB SPI NAND.
 UART0 console: **115200, 8N1**. Based on the fixed `demo128-nand` BSP in
 [boa-z/rt-thread](https://github.com/boa-z/rt-thread/tree/bsp/artinchip-d213-dev).
 
-**Status:** local minimal ELF, FIT and complete IMG have passed offline checks.
-No development-board boot test has been performed. Public ELF/FIT builds have passed on GitHub-hosted Ubuntu 24.04
-([verified run](https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43231016766)); its artifact was downloaded and SHA256-checked. See [validation status](docs/VALIDATION.md).
-Public CI is deliberately **ELF + FIT only**, not a complete flashable firmware
-build: Bootloader/PBP redistribution permission is unconfirmed.
+**Status:** minimal ELF, FIT and complete ArtInChip IMG pass local offline checks.
+GitHub-hosted builds and downloadable firmware artifacts are provided by
+[Actions](https://github.com/boa-z/d213-rtthread-firmware/actions).
+No development-board boot test has been performed. See
+[validation status](docs/VALIDATION.md) and the
+[Releases page](https://github.com/boa-z/d213-rtthread-firmware/releases).
 
 ## Architecture
 
 - `app/`: Hello World and `fw_info` MSH command with project/BSP/config versions.
 - `profiles/minimal.config`: the pinned BSP's minimal Kconfig baseline.
 - `deps.lock.json`: RT-Thread commit, toolchain version/archive SHA256, vendor
-  tool provenance and hashes, external boot resource hashes.
+  tool provenance and hashes, boot resource provenance and hashes.
 - `tools/build.py`: fetch/export committed dependencies, prepare isolated BSP,
   invoke upstream Kconfig/SCons, verify ELF/FIT/IMG and generate the manifest.
-- `vendor/artinchip/`: selected licensed Python image tools; no native binaries.
+- `vendor/artinchip/`: selected licensed Python image tools and SDK notice.
+- `vendor/boot/`: unchanged, SHA256-locked D213 Bootloader/PBP resources.
 - `.github/workflows/firmware.yml`: PR, main push, manual and tag builds;
-  artifact upload and tag release of public ELF/FIT assets only.
+  artifact upload and tag release of complete ELF/FIT/IMG firmware.
 
 No RT-Thread fork is copied here. The top-level manager fetches a fixed commit
 and exports its committed source into `.cache/`. It copies only the board into
@@ -51,11 +53,12 @@ uv run --frozen python -m unittest discover -s tests -v
 (cd out/minimal && sha256sum -c SHA256SUMS)
 ```
 
-This default `--mode public` produces the minimal ELF and vendor-compatible
-FIT, without downloading Bootloader or PBP. No system RISC-V GCC, SDK, `dtc`,
-`mkimage` or `mkenvimage` installation is required. GCC/newlib are downloaded
-from a versioned RT-Thread toolchains-ci release and verified against SHA256.
-Python dependencies are locked with distribution hashes in `uv.lock`.
+The default `--mode full` produces ELF, FIT and a complete ArtInChip `.img`.
+The exact Bootloader/PBP are included in `vendor/boot/` and verified before
+building. No Luban-Lite checkout, system RISC-V GCC, `dtc`, `mkimage` or
+`mkenvimage` installation is required. GCC/newlib are downloaded from a fixed
+RT-Thread toolchains-ci release and verified against SHA256. Python dependencies
+are locked with distribution hashes in `uv.lock`.
 
 The minimal application provides FinSH/MSH, UART0, GPIO and the upstream basic
 kernel setup. It does not add display, LVGL, networking, audio or CarPlay.
@@ -63,21 +66,21 @@ Only `minimal` is accepted today; unsupported profile names fail explicitly.
 The existing upstream minimal config also selects some generic driver
 frameworks and DMA support; it is retained without an unrelated config rewrite.
 
-## Complete IMG with authorized boot resources
+## Build modes and local inputs
 
-Read [third-party licensing](docs/THIRD_PARTY.md) first. Obtain the **exact**
-`bootloader.bin` and `d21x.pbp` identified in `deps.lock.json` through an
-authorized source. Store them outside Git; `.cache/local-boot/` is one ignored
-local option. Unknown versions fail SHA256/size verification.
+The complete build uses the checked-in original D213 resources and preserves
+their SDK redistribution notice. Sources, versions, SHA256 and modification
+scope are documented in [third-party notices](docs/THIRD_PARTY.md).
+The normal build does not need access to the original SDK repository.
+
+For an ELF/FIT-only build, explicitly select `--mode public`:
 
 ```sh
-uv run --frozen python tools/build.py --profile minimal --mode full \
-  --boot-resources /path/to/authorized/d213-boot
+uv run --frozen python tools/build.py --profile minimal --mode public
 ```
 
-The normal build does not need the source SDK. There is no implicit SDK search
-or local SDK fallback. Do not upload complete images until the boot resources'
-redistribution terms permit it. The public upload stage rejects full manifests.
+A local boot resource directory can be supplied with `--boot-resources DIR`;
+the exact same SHA256 and size checks apply. Alternate resource versions fail.
 
 To reuse existing **locked** dependencies without downloading again:
 
@@ -96,7 +99,7 @@ hash; manifests clearly record that limitation. Prefer the verified archive.
 
 `out/minimal/` contains `rtthread.elf`, `rtthread.bin`, `rtthread.map`,
 `d21x_os.itb`, effective `rtconfig.h` and `config`, `image_cfg.json`,
-`manifest.json`, `SHA256SUMS` and license notices. Full mode additionally
+`manifest.json`, `SHA256SUMS` and license notices. The default full mode also
 produces `d213-minimal.img` and local boot/DDR/partition intermediates.
 
 The manifest records project and RT-Thread commits, profile, toolchain version
@@ -140,15 +143,16 @@ None of those runtime results are claimed by the offline checks.
 
 Workflow builds run on GitHub-hosted `ubuntu-24.04`, use pinned Actions commits,
 Python/uv versions, locked Python dependencies, RT-Thread and GCC. PR/main/
-manual builds upload only the public allowlist. Tags `v*` publish the same
-ELF/FIT assets with an explicit **no complete IMG** release description.
-Published versions are listed on the [Releases page](https://github.com/boa-z/d213-rtthread-firmware/releases). Release assets are explicitly scoped to public ELF/FIT.
+manual builds generate and verify complete IMG firmware and upload an explicit
+artifact allowlist. Tags `v*` repeat the build and publish ELF/BIN/FIT/IMG,
+manifest, SHA256SUMS and license notices. Release notes clearly state the
+hardware validation status. Raw packaging intermediates are not uploaded.
 
 - Download/DNS errors: restore HTTPS access to GitHub/PyPI, or supply the locked
   local clone/archive above. Do not replace a locked URL with `latest`.
 - Wrong compiler / missing libc: use the locked complete toolchain, including
   newlib; a distro `gcc-riscv64-unknown-elf` alone may lack libc headers.
-- Missing boot resources: use public mode or supply authorized, matching files;
+- Missing boot resources: restore the tracked vendor files or supply matching files;
   full mode never silently falls back to ELF-only success.
 - Address/partition/hash rejection: check the input commit/config/resources;
   do not bypass the checks or substitute a vendor example partition table.
@@ -156,16 +160,16 @@ Published versions are listed on the [Releases page](https://github.com/boa-z/d2
   require a reviewed lock/config change and rerun of all validation.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [third-party notices](docs/THIRD_PARTY.md)
-and the Apache-2.0 [LICENSE](LICENSE). External boot binaries have separate,
-currently unconfirmed redistribution rights.
+and the Apache-2.0 [LICENSE](LICENSE). Original boot resources retain the SDK
+redistribution notice in `vendor/artinchip/SDK-NOTICE.txt`.
 
 ## 中文说明
 
 这是 D213 最小 RT-Thread 独立应用与镜像工程，正常构建不需要完整 Luban-Lite。
 依赖固定到 Commit/版本及 SHA256；底层仍使用上游 BSP 的 SCons、Kconfig、HAL
-和链接脚本。默认命令生成 ELF/FIT，完整 IMG 需要用户提供经授权的启动资源。
+和链接脚本。默认命令生成 ELF/FIT 和完整 IMG，启动资源随工程固定管理并校验 SHA256。
 
 已完成本地 ELF/FIT/IMG 编译与静态验证，并与原始打包工具进行逐字节兼容性对比。
 **尚未进行开发板启动验证。** 公开仓库已创建，[GitHub Actions 实际运行](https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43231016766)已成功，产物已下载并通过 SHA256 校验。
-Bootloader/PBP 的公开再分发权限未确认，因此公开 CI 和 Release 仅允许 ELF/FIT，
-不会将它们称为完整烧录镜像。详细状态见 [验证记录](docs/VALIDATION.md)。
+Bootloader/PBP 按你的授权直接复用原始版本，并保留来源、哈希及 SDK 分发声明。
+CI 和 Tag Release 均生成完整固件。详细状态见 [验证记录](docs/VALIDATION.md)。

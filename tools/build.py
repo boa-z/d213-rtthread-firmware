@@ -94,18 +94,19 @@ def toolchain(local, archive):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--profile', choices=['minimal'], default='minimal')
-    p.add_argument('--mode', choices=['public','full'], default='public', help='public = ELF+FIT; full requires licensed local boot resources')
+    p.add_argument('--mode', choices=['public','full'], default='full', help='full = complete IMG (default); public = ELF+FIT only')
     p.add_argument('--rt-thread', help='existing clone at locked commit (committed files only)')
     p.add_argument('--toolchain-bin', help='existing locked GCC bin directory; archive hash is not attested')
     p.add_argument('--toolchain-archive', help='local SHA256-verified toolchain archive')
-    p.add_argument('--boot-resources', help='directory containing authorized bootloader.bin and d21x.pbp')
+    p.add_argument('--boot-resources', help='local bootloader.bin/d21x.pbp override; default uses pinned, SHA256-verified vendor resources')
     p.add_argument('-j', '--jobs', type=int, default=min(os.cpu_count() or 2, 8))
     args = p.parse_args()
     for name, digest in LOCK['vendor']['local_files'].items():
         require(sha(ROOT/name) == digest, 'vendored tool differs from lock: ' + name)
+    require(sha(ROOT/LOCK['boot_notice']['path']) == LOCK['boot_notice']['sha256'], 'SDK notice differs from lock')
     if args.mode == 'full':
-        require(args.boot_resources is not None, '--mode full requires --boot-resources; redistribution permission unconfirmed')
-        resources(args.boot_resources, LOCK)
+        boot_directory = Path(args.boot_resources).resolve() if args.boot_resources else ROOT/'vendor/boot/d213-demo128-nand'
+        resources(boot_directory, LOCK)
     src = source(args.rt_thread)
     bindir, ccversion = toolchain(args.toolchain_bin, args.toolchain_archive)
     workroot = ROOT/'.cache/work'/args.profile
@@ -165,7 +166,7 @@ def main():
     checks = {'fit':fit(out/'d21x_os.itb', out/'rtthread.elf')}
     boot = None
     if args.mode == 'full':
-        for name in LOCK['boot_resources']: shutil.copyfile(Path(args.boot_resources)/name, out/name)
+        for name in LOCK['boot_resources']: shutil.copyfile(boot_directory/name, out/name)
         vendor = ROOT/'vendor/artinchip'
         command([sys.executable,vendor/'gen_partition_table.py','-c',out/'image_cfg.json','-o',out/'partition_table.h','-j',out/'partition.json'], env=env)
         command([sys.executable,vendor/'mk_private_resource.py','-l',f'{out}/ddr_init.json,{out}/partition.json','-o',out/'ddr_init.bin'], env=env)
@@ -177,11 +178,12 @@ def main():
         checks['fit'] = fit(out/'d21x_os.itb', out/'rtthread.elf')
         img.rename(out/'d213-minimal.img')
         boot = LOCK['boot_resources']
-    # Boot/DDR inputs and processed bootloaders are kept local; never upload them by default.
+    # Publish the final IMG; raw boot resources and packaging intermediates stay local.
     deliver = ['rtthread.elf','rtthread.bin','rtthread.map','d21x_os.itb','rtconfig.h','config','image_cfg.json']
     if args.mode == 'full': deliver += ['d213-minimal.img']
     for source_name, output_name in [('LICENSE','LICENSE'), ('NOTICE','NOTICE'),
-            ('docs/THIRD_PARTY.md','THIRD_PARTY.md'), ('docs/RUNTIME_LICENSES.txt','RUNTIME_LICENSES.txt')]:
+            ('docs/THIRD_PARTY.md','THIRD_PARTY.md'), ('docs/RUNTIME_LICENSES.txt','RUNTIME_LICENSES.txt'),
+            ('vendor/artinchip/SDK-NOTICE.txt','SDK-NOTICE.txt')]:
         shutil.copyfile(ROOT/source_name, out/output_name)
         deliver.append(output_name)
     artifact_hashes = {name:{'size':(out/name).stat().st_size,'sha256':sha(out/name)} for name in deliver}
@@ -189,7 +191,8 @@ def main():
         'rt_thread_commit':LOCK['rt_thread']['commit'],'profile':args.profile,'mode':args.mode,
         'complete_firmware':args.mode=='full','hardware_tested':False,
         'toolchain':{'version':ccversion,'archive_sha256':LOCK['toolchain']['sha256'] if not args.toolchain_bin else None},
-        'boot_resources':boot,'full_image_blocker':None if boot else 'Bootloader/PBP redistribution permission unconfirmed; authorized local inputs required',
+        'boot_resources':boot,'full_image_blocker':None if boot else 'ELF/FIT-only mode was explicitly selected',
+        'dependency_lock_sha256':sha(ROOT/'deps.lock.json'),
         'config_sha256':config_hash,'profile_sha256':sha(ROOT/'profiles/minimal.config'),
         'pack_config_sha256':sha(out/'image_cfg.json'),'checks':checks,'artifacts':artifact_hashes}
     (out/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n')
