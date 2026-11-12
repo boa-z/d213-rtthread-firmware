@@ -6,9 +6,8 @@ UART0 console: **115200, 8N1**. Based on the fixed `demo128-nand` BSP in
 [boa-z/rt-thread](https://github.com/boa-z/rt-thread/tree/bsp/artinchip-d213-dev).
 
 **Status:** local minimal ELF, FIT and complete IMG have passed offline checks.
-No development-board boot test has been performed. Public GitHub publication
-and an actual hosted Actions run remain pending because the implementation
-environment cannot reach GitHub. See [validation status](docs/VALIDATION.md).
+No development-board boot test has been performed. GitHub connectivity is available and the first hosted Actions build is
+being validated. See [validation status](docs/VALIDATION.md).
 Public CI is deliberately **ELF + FIT only**, not a complete flashable firmware
 build: Bootloader/PBP redistribution permission is unconfirmed.
 
@@ -41,7 +40,7 @@ Allow several GiB of free space for the toolchain. First build requires HTTPS
 access to GitHub and PyPI; subsequent builds can use verified cached inputs.
 For example, install the pinned uv with `python3 -m pip install uv==0.13.6`.
 
-After this project is published:
+Clone and build:
 
 ```sh
 git clone https://github.com/boa-z/d213-rtthread-firmware.git
@@ -167,7 +166,6 @@ currently unconfirmed redistribution rights.
 和链接脚本。默认命令生成 ELF/FIT，完整 IMG 需要用户提供经授权的启动资源。
 
 已完成本地 ELF/FIT/IMG 编译与静态验证，并与原始打包工具进行逐字节兼容性对比。
-**尚未进行开发板启动验证，也没有已成功运行的远端 Actions 记录。** 当前环境的
-GitHub 网络访问受限，远端建仓、Push、Actions 和 Release 均待恢复后完成。
+**尚未进行开发板启动验证，也没有已成功运行的远端 Actions 记录。** GitHub 连接已恢复，正在完成远端建仓和首次 Actions 验证。
 Bootloader/PBP 的公开再分发权限未确认，因此公开 CI 和 Release 仅允许 ELF/FIT，
 不会将它们称为完整烧录镜像。详细状态见 [验证记录](docs/VALIDATION.md)。

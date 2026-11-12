@@ -49,13 +49,10 @@ Only the unsigned D213 demo128 NAND contract is supported.
 
 ## Outstanding acceptance items
 
-- **Remote repository creation/push:** pending. The requested GitHub repository
-  could not be queried or created: `api.github.com` and `github.com` DNS failed
-  in this execution environment. `gh auth status` could not validate the
-  configured `boa-z` session; do not infer token validity from that failure.
-- **Actual hosted Actions run / artifact download / Release:** pending. A
-  workflow is implemented, but no run URL or successful remote result exists.
-  Do not report the YAML or local tests as a hosted CI success.
+- **Remote publication / hosted Actions:** GitHub HTTPS/API connectivity and
+  the `boa-z` CLI identity are verified. Initial publication and the first
+  hosted build are in progress; successful run/artifact evidence will be
+  recorded here after the workflow completes.
 - **Public complete IMG:** blocked on confirmation of Bootloader/PBP
   redistribution permission. Source commit/path/hash are recorded, binaries
   excluded. Public ELF/FIT mode and explicitly scoped tag release are ready.
@@ -67,25 +64,9 @@ Only the unsigned D213 demo128 NAND contract is supported.
 - **Other architectural example repositories:** could not be fetched in this
   environment. No claim is made of a source-level review of those projects.
 
-The workspace's `.git` directory is mounted read-only and initially empty.
-A separate publish checkout and source-only Git bundle are prepared under
-`/tmp` / `out/` for handoff, without changing that mount or modifying upstream
-repositories. Neither the bundle nor normal commits contain boot resources.
+## Publishing a new version
 
-## Completing publication when GitHub access is restored
-
-From the prepared source checkout (or a fresh clone of its source bundle):
-
-```sh
-gh auth status
-gh repo view boa-z/d213-rtthread-firmware --json nameWithOwner,isEmpty,url
-```
-
-If it does not exist, create it with
-`gh repo create boa-z/d213-rtthread-firmware --public --source . --remote origin --push`.
-If it already exists, inspect its contents/history first; do not overwrite an
-existing repository. Inspect the first main-push build using
-`gh run list --repo boa-z/d213-rtthread-firmware` and `gh run view RUN_ID --log-failed`,
-fix any failures, and download the resulting public artifact to verify it.
-Create an initial `v0.1.0` tag only after the hosted build passes; its release
-will explicitly contain ELF/FIT only until boot resource rights are resolved.
+Inspect the main-branch Actions checks, download the public artifacts and verify
+`SHA256SUMS` before tagging. Use `gh run view RUN_ID --log-failed` to investigate
+failures. A `v*` tag invokes the public ELF/FIT release workflow. Complete IMG
+publication still requires confirmation of boot resource redistribution rights.
