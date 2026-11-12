@@ -49,10 +49,22 @@ Only the unsigned D213 demo128 NAND contract is supported.
 
 ## Outstanding acceptance items
 
-- **Remote publication / hosted Actions:** GitHub HTTPS/API connectivity and
-  the `boa-z` CLI identity are verified. Initial publication and the first
-  hosted build are in progress; successful run/artifact evidence will be
-  recorded here after the workflow completes.
+- **Remote publication:** public repository created at
+  https://github.com/boa-z/d213-rtthread-firmware, default branch `main`.
+- **Hosted Actions / artifact:** first successful run:
+  https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43231016766
+  at source `dbd1ab7f937cfbd9f1cb15d77da6456f9ac88767`. GitHub-hosted
+  Ubuntu 24.04 fetched the pinned RT-Thread commit, SHA256-verified toolchain
+  and locked Python dependencies, built/checked ELF+FIT, ran public tests
+  (10 passed, one complete-image case skipped), and uploaded artifacts.
+  The artifact was downloaded using `gh run download`; every SHA256SUMS entry
+  passed. Its manifest says `mode=public`, `complete_firmware=false`,
+  `hardware_tested=false`; no full IMG or boot resources were present.
+  CI ELF was 881,328 bytes, BIN 61,984 bytes, FIT 65,536 bytes. Debug paths
+  account for ELF/map size differences from local builds.
+- **Release workflow:** `v*` tags build again before publishing ELF/FIT assets.
+  Current releases and their tag-specific build evidence are available on
+  https://github.com/boa-z/d213-rtthread-firmware/releases.
 - **Public complete IMG:** blocked on confirmation of Bootloader/PBP
   redistribution permission. Source commit/path/hash are recorded, binaries
   excluded. Public ELF/FIT mode and explicitly scoped tag release are ready.

@@ -78,5 +78,25 @@
       "size": 30000,
       "redistribution": "unconfirmed; user-supplied only"
     }
-  }
+  },
+  "runtime_license_sources": [
+    {
+      "repository": "https://github.com/mirror/newlib-cygwin",
+      "commit": "415fdd4279b85eeec9d54775ce13c5c412451e08",
+      "path": "COPYING.NEWLIB",
+      "sha256": "bc1fbe427c6165ae8d06203f65af8c9f5fd5463788f2e8f56bceb50eeda19449"
+    },
+    {
+      "repository": "https://github.com/gcc-mirror/gcc",
+      "commit": "ee5c3db6c5b2c3332912fb4c9cfa2864569ebd9a",
+      "path": "COPYING.RUNTIME",
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "repository": "https://github.com/gcc-mirror/gcc",
+      "commit": "ee5c3db6c5b2c3332912fb4c9cfa2864569ebd9a",
+      "path": "COPYING3",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    }
+  ]
 }

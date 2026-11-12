@@ -14,7 +14,7 @@ components or grant rights to firmware blobs.
 | Python fdt | Same SDK commit, `tools/scripts/fdt/`, version 0.3.3 | Copyright 2017 Martin Olejar, Apache-2.0 headers retained in every source file. |
 | Bootloader | Same SDK commit, `target/d21x/demo128-nand/pack/bootloader.bin` | **Redistribution unconfirmed.** Not included, downloaded, or published by the public workflow. Only authorized user-supplied input is accepted. |
 | PBP | Same SDK commit, `bsp/artinchip/sys/d21x/d21x.pbp` | **Redistribution unconfirmed.** Same restriction. Public availability is not treated as redistribution permission. |
-| GCC/newlib/libgcc | SiFive GCC-Metal 10.2.0-2020.12.8, RT-Thread toolchains-ci v1.4 archive | GCC/binutils GPL-family, libgcc runtime exception, newlib file-specific permissive licenses. Build tool fetched externally with SHA256; not vendored. Firmware links newlib/libgcc. See `docs/RUNTIME_LICENSES.txt` for notices retained with redistributed artifacts. |
+| GCC/newlib/libgcc | SiFive GCC-Metal 10.2.0-2020.12.8, RT-Thread toolchains-ci v1.4 archive | GCC/binutils GPL-family, libgcc runtime exception, newlib file-specific permissive licenses. Build tool fetched externally with SHA256; not vendored. Firmware links newlib/libgcc. See `docs/RUNTIME_LICENSES.txt` for upstream newlib 4.1.0 notices, GCC runtime exception and GPLv3 text retained with redistributed artifacts. Their source revisions/hashes are recorded in the lock file. |
 | Python build dependencies | SCons 4.11.1, kconfiglib 14.1.0 | SCons MIT; kconfiglib ISC. Versions and distribution hashes locked in `uv.lock`; build-time only. |
 
 ## Local changes to the image tools
