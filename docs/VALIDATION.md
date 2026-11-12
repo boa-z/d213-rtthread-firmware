@@ -66,10 +66,16 @@ Only the unsigned D213 demo128 NAND contract is supported.
 - **Release workflow:** `v*` tags build again before publishing complete ELF/FIT/IMG assets.
   Current releases and their tag-specific build evidence are available on
   https://github.com/boa-z/d213-rtthread-firmware/releases.
-- **Complete IMG CI:** enabled using the two fixed boot resources in
-  `vendor/boot/`, with original SDK notice retained. The first ELF/FIT-only run
-  above is historical evidence; current full-image run results are listed on
-  the Actions page and checked before tagging a release.
+- **Complete IMG CI:** successful full firmware run:
+  https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43233768689
+  at source `7e6fc9555e7cd2396d46265798927147270ea167`. The clean GitHub-hosted
+  runner built ELF/FIT/IMG using the fixed vendor resources, passed all 12
+  tests and uploaded the complete firmware. Its artifact was downloaded and
+  every SHA256SUMS entry verified. Independent local checks also validated
+  downloaded FIT versus ELF and the IMG's seven metadata entries/payloads.
+  Manifest: `mode=full`, `complete_firmware=true`, `project_dirty=false`,
+  `hardware_tested=false`. IMG size: 914,944 bytes; FIT size: 65,536 bytes.
+  The earlier ELF/FIT-only run above is retained as historical evidence.
 - **Real board boot, UART, tick, interrupts, scheduling, reset/recovery:** not
   tested. No serial development board was available. Runtime readiness is a
   design target, not a claimed hardware result.

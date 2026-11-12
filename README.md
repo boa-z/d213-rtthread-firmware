@@ -6,8 +6,9 @@ UART0 console: **115200, 8N1**. Based on the fixed `demo128-nand` BSP in
 [boa-z/rt-thread](https://github.com/boa-z/rt-thread/tree/bsp/artinchip-d213-dev).
 
 **Status:** minimal ELF, FIT and complete ArtInChip IMG pass local offline checks.
-GitHub-hosted builds and downloadable firmware artifacts are provided by
-[Actions](https://github.com/boa-z/d213-rtthread-firmware/actions).
+Complete firmware builds have passed on GitHub-hosted Ubuntu 24.04
+([verified run](https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43233768689)); downloaded artifacts passed SHA256 and
+independent FIT/IMG validation.
 No development-board boot test has been performed. See
 [validation status](docs/VALIDATION.md) and the
 [Releases page](https://github.com/boa-z/d213-rtthread-firmware/releases).
@@ -170,6 +171,6 @@ redistribution notice in `vendor/artinchip/SDK-NOTICE.txt`.
 和链接脚本。默认命令生成 ELF/FIT 和完整 IMG，启动资源随工程固定管理并校验 SHA256。
 
 已完成本地 ELF/FIT/IMG 编译与静态验证，并与原始打包工具进行逐字节兼容性对比。
-**尚未进行开发板启动验证。** 公开仓库已创建，[GitHub Actions 实际运行](https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43231016766)已成功，产物已下载并通过 SHA256 校验。
-Bootloader/PBP 按你的授权直接复用原始版本，并保留来源、哈希及 SDK 分发声明。
+**尚未进行开发板启动验证。** 公开仓库已创建，[GitHub Actions 实际运行](https://github.com/boa-z/d213-rtthread-firmware/actions/runs/43233768689)已成功，产物已下载并通过 SHA256 校验。
+Bootloader/PBP 复用固定原始版本，并保留来源、哈希及 SDK 分发声明。
 CI 和 Tag Release 均生成完整固件。详细状态见 [验证记录](docs/VALIDATION.md)。
